@@ -3,8 +3,6 @@
 
 # ABAP mockup viewer for Mockup loader
 
-In-system viewer/editor for abap mockup loader
-
 In-system tool to view zip W3MI mocks created for [Mockup loader](https://github.com/sbcgua/mockup_loader) by [Mockup compiler](https://github.com/sbcgua/mockup_compiler).
 
 ## Dependencies:
