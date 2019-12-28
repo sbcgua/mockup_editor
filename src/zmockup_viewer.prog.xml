@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <PROGDIR>
-    <NAME>ZMOCKUP_EDITOR</NAME>
+    <NAME>ZMOCKUP_VIEWER</NAME>
     <SUBC>1</SUBC>
     <RLOAD>E</RLOAD>
     <FIXPT>X</FIXPT>
@@ -12,7 +12,7 @@
    <DYNPROS>
     <item>
      <HEADER>
-      <PROGRAM>ZMOCKUP_EDITOR</PROGRAM>
+      <PROGRAM>ZMOCKUP_VIEWER</PROGRAM>
       <SCREEN>0100</SCREEN>
       <LANGUAGE>E</LANGUAGE>
       <DESCRIPT>Container screen</DESCRIPT>

@@ -3,10 +3,10 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <TPARA>
-    <PARAMID>ZMOCKUP_EDITOR_OBJ</PARAMID>
+    <PARAMID>ZMOCKUP_VIEWER_OBJ</PARAMID>
    </TPARA>
    <TPARAT>
-    <PARAMID>ZMOCKUP_EDITOR_OBJ</PARAMID>
+    <PARAMID>ZMOCKUP_VIEWER_OBJ</PARAMID>
     <SPRACHE>E</SPRACHE>
     <PARTEXT>Mokcup editor MIME object</PARTEXT>
    </TPARAT>

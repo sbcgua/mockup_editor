@@ -1,21 +1,21 @@
-report zmockup_editor.
+report zmockup_viewer.
 
-include zmockup_editor_error.
-include zmockup_editor_model.
+include zmockup_viewer_error.
+include zmockup_viewer_model.
 
-include zmockup_editor_enabler.
-include zmockup_editor_view_base.
-include zmockup_editor_view_index.
-include zmockup_editor_view_mock.
-include zmockup_editor_view_text.
+include zmockup_viewer_enabler.
+include zmockup_viewer_view_base.
+include zmockup_viewer_view_index.
+include zmockup_viewer_view_mock.
+include zmockup_viewer_view_text.
 
-include zmockup_editor_mock_app.
+include zmockup_viewer_mock_app.
 
 **********************************************************************
 * ENTRY POINT
 **********************************************************************
 constants:
-  GC_OBJ_PARAM_NAME TYPE CHAR20 VALUE 'ZMOCKUP_EDITOR_OBJ'.
+  GC_OBJ_PARAM_NAME TYPE CHAR20 VALUE 'ZMOCKUP_VIEWER_OBJ'.
 
 form main using pv_mimename.
   data lx type ref to cx_static_check.
