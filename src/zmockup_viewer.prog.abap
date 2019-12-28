@@ -1,5 +1,6 @@
 report zmockup_viewer.
 
+include zmockup_viewer_w3mi_contrib.
 include zmockup_viewer_error.
 include zmockup_viewer_model.
 
@@ -15,7 +16,7 @@ include zmockup_viewer_mock_app.
 * ENTRY POINT
 **********************************************************************
 constants:
-  GC_OBJ_PARAM_NAME TYPE CHAR20 VALUE 'ZMOCKUP_VIEWER_OBJ'.
+  gc_obj_param_name type char20 value 'ZMOCKUP_VIEWER_OBJ'.
 
 form main using pv_mimename.
   data lx type ref to cx_static_check.
@@ -37,7 +38,7 @@ endform.
 form f4_mime_path changing c_path.
   c_path = zcl_w3mime_storage=>choose_mime_dialog( ).
   if c_path is not initial.
-    set parameter id GC_OBJ_PARAM_NAME field c_path.
+    set parameter id gc_obj_param_name field c_path.
   endif.
 endform.
 
@@ -60,7 +61,7 @@ selection-screen end of block b1.
 **********************************************************************
 module status_0100 output.
   lcl_app=>on_screen_output( ).
-endmodule.                 " status_0100  output
+endmodule.
 
 module user_command_0100 input.
   data lv_processed type abap_bool.
@@ -73,7 +74,7 @@ module user_command_0100 input.
     when others.
       lcl_app=>on_user_command( sy-ucomm ).
   endcase.
-endmodule.                 " user_command_0100  input
+endmodule.
 
 **********************************************************************
 * ENTRY POINT
@@ -84,14 +85,14 @@ initialization.
   t_mime   = 'Target W3MI object'.        "#EC NOTEXT
   t_mime2  = '  (must be existing one)'.  "#EC NOTEXT
 
-  get parameter id GC_OBJ_PARAM_NAME field p_mime.
+  get parameter id gc_obj_param_name field p_mime.
 
 at selection-screen on value-request for p_mime.
   perform f4_mime_path changing p_mime.
 
 at selection-screen on p_mime.
   if p_mime is not initial.
-    set parameter id GC_OBJ_PARAM_NAME field p_mime.
+    set parameter id gc_obj_param_name field p_mime.
   endif.
 
 start-of-selection.
