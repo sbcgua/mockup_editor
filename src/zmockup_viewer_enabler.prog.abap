@@ -18,9 +18,9 @@ endclass.
 class lcl_salv_model_list implementation.
   method get_grid.
     data:
-     lo_grid_adap type ref to cl_salv_grid_adapter,
-     lo_fs_adap   type ref to cl_salv_fullscreen_adapter,
-     lo_root      type ref to cx_root.
+      lo_grid_adap type ref to cl_salv_grid_adapter,
+      lo_fs_adap   type ref to cl_salv_fullscreen_adapter,
+      lo_root      type ref to cx_root.
 
     try.
       lo_grid_adap ?= io_salv_model->r_controller->r_adapter.
@@ -83,7 +83,7 @@ class lcl_salv_edit_enabler definition final.
 
 endclass.
 
-CLASS lcl_salv_edit_enabler IMPLEMENTATION.
+class lcl_salv_edit_enabler implementation.
 
   method get_grid.
     data lo_error type ref to cx_salv_msg.
@@ -163,13 +163,14 @@ CLASS lcl_salv_edit_enabler IMPLEMENTATION.
         endif.
       endloop.
     catch cx_salv_msg.
-      exit.
+      return.
     endtry.
 
-    check lo_grid is bound.
-    check lo_grid->is_ready_for_input( ) = 1.
+    if lo_grid is not bound or lo_grid->is_ready_for_input( ) <> 1.
+      return.
+    endif.
 
-* … toolbar button check
+* toolbar button check
     clear ls_toolbar.
     ls_toolbar-function    = cl_gui_alv_grid=>mc_fc_check.
     ls_toolbar-quickinfo  = text-053.  "eingaben prfen
@@ -177,13 +178,13 @@ CLASS lcl_salv_edit_enabler IMPLEMENTATION.
     ls_toolbar-disabled    = space.
     append ls_toolbar to mt_toolbar.
 
-* … toolbar seperator
+* toolbar seperator
     clear ls_toolbar.
     ls_toolbar-function    = '&&sep01'.
     ls_toolbar-butn_type  = 3.
     append ls_toolbar to mt_toolbar.
 
-* … toolbar button cut
+* toolbar button cut
     clear ls_toolbar.
     ls_toolbar-function    = cl_gui_alv_grid=>mc_fc_loc_cut.
     ls_toolbar-quickinfo  = text-046.  "ausschneiden
@@ -191,7 +192,7 @@ CLASS lcl_salv_edit_enabler IMPLEMENTATION.
     ls_toolbar-disabled    = space.
     append ls_toolbar to mt_toolbar.
 
-* … toolbar button copy
+* toolbar button copy
     clear ls_toolbar.
     ls_toolbar-function    = cl_gui_alv_grid=>mc_fc_loc_copy.
     ls_toolbar-quickinfo  = text-045.                        " kopieren
@@ -199,7 +200,7 @@ CLASS lcl_salv_edit_enabler IMPLEMENTATION.
     ls_toolbar-disabled    = space.
     append ls_toolbar to mt_toolbar.
 
-* … toolbar button paste over row
+* toolbar button paste over row
     clear ls_toolbar.
     ls_toolbar-function    = cl_gui_alv_grid=>mc_fc_loc_paste.
     ls_toolbar-quickinfo  = text-047.
@@ -207,7 +208,7 @@ CLASS lcl_salv_edit_enabler IMPLEMENTATION.
     ls_toolbar-disabled    = space.
     append ls_toolbar to mt_toolbar.
 
-* … toolbar button paste new row
+* toolbar button paste new row
     clear ls_toolbar.
     ls_toolbar-function    = cl_gui_alv_grid=>mc_fc_loc_paste_new_row.
     ls_toolbar-quickinfo  = text-063.
@@ -215,7 +216,7 @@ CLASS lcl_salv_edit_enabler IMPLEMENTATION.
     ls_toolbar-disabled    = space.
     append ls_toolbar to mt_toolbar.
 
-* … toolbar button undo
+* toolbar button undo
     clear ls_toolbar.
     ls_toolbar-function    = cl_gui_alv_grid=>mc_fc_loc_undo.
     ls_toolbar-quickinfo  = text-052.  "rckgngig
@@ -223,13 +224,13 @@ CLASS lcl_salv_edit_enabler IMPLEMENTATION.
     ls_toolbar-disabled    = space.
     append ls_toolbar to mt_toolbar.
 
-* … toolbar separator
+* toolbar separator
     clear ls_toolbar.
     ls_toolbar-function    = '&&sep02'.
     ls_toolbar-butn_type  = 3.
     append ls_toolbar to mt_toolbar.
 
-* … toolbar button append row
+* toolbar button append row
     clear ls_toolbar.
     ls_toolbar-function    = cl_gui_alv_grid=>mc_fc_loc_append_row.
     ls_toolbar-quickinfo   = text-054.  "zeile anhngen
@@ -237,7 +238,7 @@ CLASS lcl_salv_edit_enabler IMPLEMENTATION.
     ls_toolbar-disabled    = space.
     append ls_toolbar to mt_toolbar.
 
-* … toolbar button insert row
+* toolbar button insert row
     clear ls_toolbar.
     ls_toolbar-function    = cl_gui_alv_grid=>mc_fc_loc_insert_row.
     ls_toolbar-quickinfo  = text-048.  "zeile einfgen
@@ -245,7 +246,7 @@ CLASS lcl_salv_edit_enabler IMPLEMENTATION.
     ls_toolbar-disabled    = space.
     append ls_toolbar to mt_toolbar.
 
-* … toolbar button delete row
+* toolbar button delete row
     clear ls_toolbar.
     ls_toolbar-function    = cl_gui_alv_grid=>mc_fc_loc_delete_row.
     ls_toolbar-quickinfo  = text-049.  "zeile lschen
@@ -253,7 +254,7 @@ CLASS lcl_salv_edit_enabler IMPLEMENTATION.
     ls_toolbar-disabled    = space.
     append ls_toolbar to mt_toolbar.
 
-* … toolbar button copy row
+* toolbar button copy row
     clear ls_toolbar.
     ls_toolbar-function    = cl_gui_alv_grid=>mc_fc_loc_copy_row.
     ls_toolbar-quickinfo  = text-051.  "duplizieren
@@ -268,7 +269,7 @@ CLASS lcl_salv_edit_enabler IMPLEMENTATION.
     ls_toolbar-disabled    = space.
     append ls_toolbar to mt_toolbar.
 
-* … toolbar separator
+* toolbar separator
     clear ls_toolbar.
     ls_toolbar-function    = '&sep03'.
     ls_toolbar-butn_type  = 3.

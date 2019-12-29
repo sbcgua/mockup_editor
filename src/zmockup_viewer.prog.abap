@@ -18,7 +18,7 @@ include zmockup_viewer_mock_app.
 constants:
   gc_obj_param_name type char20 value 'ZMOCKUP_VIEWER_OBJ'.
 
-form main using pv_mimename.
+form main using pv_mimename type w3objid.
   data lx type ref to cx_static_check.
   data l_str type string.
 
@@ -35,7 +35,7 @@ form main using pv_mimename.
 
 endform.
 
-form f4_mime_path changing c_path.
+form f4_mime_path changing c_path type w3objid.
   c_path = zcl_w3mime_storage=>choose_mime_dialog( ).
   if c_path is not initial.
     set parameter id gc_obj_param_name field c_path.

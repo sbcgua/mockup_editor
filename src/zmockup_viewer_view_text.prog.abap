@@ -67,10 +67,10 @@ class lcl_text_view implementation.
         exporting
           parent = cl_gui_container=>screen0.
 
-      DATA: lv_xstr  TYPE xstring,
-            lt_xdata TYPE TABLE OF w3_mime,
+      data: lv_xstr  type xstring,
+            lt_xdata type table of w3_mime,
             lv_url   type char256,
-            lv_size  TYPE int4.
+            lv_size  type int4.
 
       call function 'SCMS_STRING_TO_XSTRING'
         exporting
