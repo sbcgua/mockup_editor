@@ -55,6 +55,7 @@ class lcl_mock_view implementation.
     data: lo_display type ref to cl_salv_display_settings.
     lo_display = mo_alv->get_display_settings( ).
     lo_display->set_striped_pattern( 'X' ).
+    lo_display->set_list_header( |Mockup viewer - { mv_mock_name }| ).
 
     data lo_event type ref to cl_salv_events_table.
     lo_event = mo_alv->get_event( ).

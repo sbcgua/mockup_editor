@@ -97,7 +97,7 @@ class lcl_text_view implementation.
 
     if mv_initiated = abap_false.
       data title type string.
-      title = |Raw mock { mv_mock_name }|.
+      title = |Mockup viewer - { mv_mock_name }|.
       set pf-status 'TEXT_VIEW'.
       set titlebar  'TEXT_VIEW' with title.
       mv_initiated = abap_true.

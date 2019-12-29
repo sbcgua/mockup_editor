@@ -77,12 +77,14 @@ class lcl_content_view implementation.
     data lo_functions type ref to cl_salv_functions_list.
     lo_functions = mo_alv->get_functions( ).
     lo_functions->set_default( abap_true ).
-    mo_alv->set_screen_status( report = sy-cprog pfstatus = 'CONTENTS_VIEW' ).
+    mo_alv->set_screen_status(
+      report = sy-cprog
+      pfstatus = 'INDEX_VIEW' ).
 
     data lo_display type ref to cl_salv_display_settings.
     lo_display = mo_alv->get_display_settings( ).
     lo_display->set_striped_pattern( 'X' ).
-    lo_display->set_list_header( |Mock viewer: { mv_mock_name } index| ).
+    lo_display->set_list_header( |Mockup viewer - { mv_mock_name } index| ).
 
     data lo_event type ref to cl_salv_events_table.
     lo_event = mo_alv->get_event( ).
