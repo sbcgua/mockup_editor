@@ -1,6 +1,3 @@
-*&---------------------------------------------------------------------*
-*&  Include           ZMOCKUP_LOADER_EDIT_MOCK_VIEW
-*&---------------------------------------------------------------------*
 class lcl_mock_view definition final inheriting from lcl_view_base.
   public section.
 
@@ -43,7 +40,7 @@ class lcl_mock_view implementation.
         changing
           t_table      = <tab> ).
     catch cx_salv_msg into lx_alv.
-      write / 'Error'.
+      write / 'Error creating SALV @view_mock'.
     endtry.
 
     set_columns( mo_alv ).
@@ -51,8 +48,9 @@ class lcl_mock_view implementation.
     data: lo_functions type ref to cl_salv_functions_list.
     lo_functions = mo_alv->get_functions( ).
     lo_functions->set_default( abap_true ).
-*    lo_functions->set_all( abap_true ).
-    mo_alv->set_screen_status( report = sy-cprog pfstatus = 'MOCK_VIEW' ).
+    mo_alv->set_screen_status(
+      report = sy-cprog
+      pfstatus = 'MOCK_VIEW' ).
 
     data: lo_display type ref to cl_salv_display_settings.
     lo_display = mo_alv->get_display_settings( ).
@@ -74,21 +72,13 @@ class lcl_mock_view implementation.
   endmethod.
 
   method on_user_command.
-*    data: lo_selections type ref to cl_salv_selections.
-*    lo_selections = mo_alv->get_selections( ).
-*    data lt_cells type salv_t_cell.
-*    lt_cells = lo_selections->get_selected_cells( ).
-*    data lt_cols type salv_t_column.
-*    lt_cols = lo_selections->get_selected_columns( ).
-*    data lt_rows type salv_t_row.
-*    lt_rows = lo_selections->get_selected_rows( ).
 
-    case iv_cmd.
-      when '%FREE_EDIT'.
-        lcl_salv_edit_enabler=>toggle_editable( mo_alv ).
-        mo_alv->refresh( ).
-    endcase.
+*    case iv_cmd.
+*      when '%FREE_EDIT'.
+*        lcl_salv_edit_enabler=>toggle_editable( mo_alv ).
+*        mo_alv->refresh( ).
+*    endcase.
 
-  endmethod.                    "on_user_command
+  endmethod.
 
 endclass.

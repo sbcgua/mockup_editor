@@ -4,6 +4,7 @@ include zmockup_viewer_w3mi_contrib.
 include zmockup_viewer_error.
 include zmockup_viewer_model.
 
+include zmockup_viewer_utils.
 include zmockup_viewer_enabler.
 include zmockup_viewer_view_base.
 include zmockup_viewer_view_index.

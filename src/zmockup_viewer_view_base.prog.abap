@@ -1,7 +1,3 @@
-*&---------------------------------------------------------------------*
-*&  Include           ZMOCKUP_LOADER_EDIT_VIEW_BASE
-*&---------------------------------------------------------------------*
-
 class lcl_view_base definition abstract.
   public section.
     methods display abstract
@@ -10,7 +6,8 @@ class lcl_view_base definition abstract.
     methods on_user_command abstract
       importing
         iv_cmd type char70
-      returning value(rv_processed) type abap_bool.
+      returning
+        value(rv_processed) type abap_bool.
     methods on_output.
     methods close.
 
@@ -43,7 +40,7 @@ class lcl_view_base implementation.
       <c>-r_column->set_long_text( |{ <c>-columnname }| ).
     endloop.
 
-  endmethod.  " set_columns.
+  endmethod.
 
   method close.
     mo_alv->close_screen( ).

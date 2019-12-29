@@ -21,11 +21,13 @@ class lcl_app definition final create private.
     class-methods start
       importing
         iv_mime_key type w3objid
-      raising lcx_error.
+      raising
+        lcx_error.
     class-methods on_screen_output.
 
     methods run
-      raising lcx_error.
+      raising
+        lcx_error.
 
     methods handle_mock_selected
       for event mock_selected of lcl_content_view
@@ -41,8 +43,8 @@ class lcl_app definition final create private.
     class-methods on_user_command
       importing
         iv_cmd type char70
-      returning value(rv_processed) type abap_bool.
-
+      returning
+        value(rv_processed) type abap_bool.
 
   private section.
     class-data go_instance type ref to lcl_app.
@@ -50,14 +52,18 @@ class lcl_app definition final create private.
     data mo_storage type ref to lcl_storage.
     data mt_route_queue type tt_route.
     data mo_current_view type ref to lcl_view_base.
+    data mv_mime_key type w3objid.
 
     methods constructor
       importing
         iv_mime_key type w3objid
-      raising lcx_error.
+      raising
+        lcx_error.
 
     methods queue_loop
-      raising lcx_error.
+      raising
+        lcx_error.
+
     methods enqueue
       importing
         iv_route type char8
@@ -65,13 +71,20 @@ class lcl_app definition final create private.
         is_next  type abap_bool optional.
 
     methods show_index
-      raising lcx_error.
+      raising
+        lcx_error.
+
     methods show_mock
-      importing iv_param type string
-      raising lcx_error.
+      importing
+        iv_param type string
+      raising
+        lcx_error.
+
     methods show_text
-      importing iv_param type string
-      raising lcx_error.
+      importing
+        iv_param type string
+      raising
+        lcx_error.
 
 endclass.
 
@@ -97,6 +110,7 @@ class lcl_app implementation.
   endmethod.
 
   method constructor.
+    mv_mime_key = iv_mime_key.
     create object mo_storage
       exporting
         iv_obj_name = iv_mime_key.
@@ -105,7 +119,7 @@ class lcl_app implementation.
   method run.
     enqueue( routes-index ).
     queue_loop( ).
-  endmethod.  " run.
+  endmethod.
 
   method queue_loop.
     data ls_route like line of mt_route_queue.
@@ -151,7 +165,9 @@ class lcl_app implementation.
 
     data lo_content_view type ref to lcl_content_view.
     create object lo_content_view
-      exporting it_contents = lt_mock_list.
+      exporting
+        iv_mock_name = |{ mv_mime_key }|
+        it_contents = lt_mock_list.
 
     mo_current_view ?= lo_content_view.
     set handler handle_mock_selected for lo_content_view.
@@ -203,51 +219,55 @@ class lcl_app implementation.
   endmethod.
 
   method handle_mock_selected.
-    enqueue( iv_route = routes-mock iv_param = mock_name ).
+    enqueue(
+      iv_route = routes-mock
+      iv_param = mock_name ).
     mo_current_view->close( ).
   endmethod.
 
   method enqueue.
-    data r like line of mt_route_queue.
-    r-route = iv_route.
-    r-param = iv_param.
+    data lv_route like line of mt_route_queue.
+    lv_route-route = iv_route.
+    lv_route-param = iv_param.
     if is_next = abap_true.
-      insert r into mt_route_queue index 1.
+      insert lv_route into mt_route_queue index 1.
     else.
-      append r to mt_route_queue.
+      append lv_route to mt_route_queue.
     endif.
   endmethod.
 
   method handle_mock_delete.
-    data lx type ref to lcx_error.
-    data msg type string.
-    try.
-      mo_storage->delete_mock( mock_name ).
-    catch lcx_error into lx.
-      msg = lx->get_text( ).
-      message msg type 'E'.
-    endtry.
 
-    data lo_content_view type ref to lcl_content_view.
-    lo_content_view ?= mo_current_view.
-    lo_content_view->update_data( mo_storage->mock_list( ) ).
+*    data lx type ref to lcx_error.
+*    data msg type string.
+*    try.
+*      mo_storage->delete_mock( mock_name ).
+*    catch lcx_error into lx.
+*      msg = lx->get_text( ).
+*      message msg type 'E'.
+*    endtry.
+*
+*    data lo_content_view type ref to lcl_content_view.
+*    lo_content_view ?= mo_current_view.
+*    lo_content_view->update_data( mo_storage->mock_list( ) ).
 
   endmethod.
 
   method handle_text_save.
-    data lo_text_view type ref to lcl_text_view.
-    lo_text_view ?= mo_current_view.
 
-    data lx type ref to lcx_error.
-    data msg type string.
-    try.
-      mo_storage->put_mock_raw(
-        iv_path = lo_text_view->mv_mock_name
-        iv_mock = lo_text_view->mv_data ).
-    catch lcx_error into lx.
-      msg = lx->get_text( ).
-      message msg type 'E'.
-    endtry.
+*    data lo_text_view type ref to lcl_text_view.
+*    lo_text_view ?= mo_current_view.
+*
+*    data lx type ref to lcx_error.
+*    data msg type string.
+*    try.
+*      mo_storage->put_mock_raw(
+*        iv_path = lo_text_view->mv_mock_name
+*        iv_mock = lo_text_view->mv_data ).
+*    catch lcx_error into lx.
+*      msg = lx->get_text( ).
+*      message msg type 'E'.
+*    endtry.
 
   endmethod.
 

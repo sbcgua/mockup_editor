@@ -1,6 +1,3 @@
-*&---------------------------------------------------------------------*
-*&  Include           ZMOCKUP_LOADER_EDIT_LIST_VIEW
-*&---------------------------------------------------------------------*
 class lcl_content_view definition final inheriting from lcl_view_base.
   public section.
     types:
@@ -12,6 +9,7 @@ class lcl_content_view definition final inheriting from lcl_view_base.
 
     methods constructor
       importing
+        iv_mock_name type string
         it_contents type string_table.
 
     methods display redefinition.
@@ -25,10 +23,6 @@ class lcl_content_view definition final inheriting from lcl_view_base.
       for event added_function of cl_salv_events
       importing e_salv_function.
 
-    methods on_before_salv_function
-      for event before_salv_function of cl_salv_events
-      importing e_salv_function.
-
     methods update_data
       importing
         it_contents type string_table.
@@ -38,11 +32,13 @@ class lcl_content_view definition final inheriting from lcl_view_base.
 
   private section.
     data mt_mock_index type tt_mock_index.
+    data mv_mock_name type string.
 
     class-methods convert_content
       importing
         it_contents type string_table
-      returning value(rt_mocks) type tt_mock_index.
+      returning
+        value(rt_mocks) type tt_mock_index.
 
 endclass.
 
@@ -60,6 +56,7 @@ class lcl_content_view implementation.
   method constructor.
     super->constructor( ).
     mt_mock_index = convert_content( it_contents ).
+    mv_mock_name = iv_mock_name.
   endmethod.
 
   method display.
@@ -72,28 +69,27 @@ class lcl_content_view implementation.
         changing
           t_table      = mt_mock_index ).
     catch cx_salv_msg into lx_alv.
-      write / 'Error'.
+      write / 'Error creating SALV'.
     endtry.
 
     set_columns( mo_alv ).
 
-    data: lo_functions type ref to cl_salv_functions_list.
+    data lo_functions type ref to cl_salv_functions_list.
     lo_functions = mo_alv->get_functions( ).
     lo_functions->set_default( abap_true ).
     mo_alv->set_screen_status( report = sy-cprog pfstatus = 'CONTENTS_VIEW' ).
 
-    data: lo_display type ref to cl_salv_display_settings.
+    data lo_display type ref to cl_salv_display_settings.
     lo_display = mo_alv->get_display_settings( ).
     lo_display->set_striped_pattern( 'X' ).
-    lo_display->set_list_header( 'Mock editor - index' ).
+    lo_display->set_list_header( |Mock viewer: { mv_mock_name } index| ).
 
     data lo_event type ref to cl_salv_events_table.
     lo_event = mo_alv->get_event( ).
     set handler handle_double_click for lo_event.
     set handler on_alv_user_command for lo_event.
-    set handler on_before_salv_function for lo_event.
 
-    data: lo_selections type ref to cl_salv_selections.
+    data lo_selections type ref to cl_salv_selections.
     lo_selections = mo_alv->get_selections( ).
     lo_selections->set_selection_mode( if_salv_c_selection_mode=>multiple ).
 
@@ -108,6 +104,7 @@ class lcl_content_view implementation.
     endtry.
 
     mo_alv->display( ).
+
   endmethod.
 
   method on_alv_user_command.
@@ -115,40 +112,37 @@ class lcl_content_view implementation.
   endmethod.
 
   method on_user_command.
-    data: lo_selections type ref to cl_salv_selections.
+    data lo_selections type ref to cl_salv_selections.
     lo_selections = mo_alv->get_selections( ).
 
     data lt_rows type salv_t_row.
     data lv_row like line of lt_rows.
     lt_rows = lo_selections->get_selected_rows( ).
 
-    case iv_cmd.
-      when '%DEL'.
-        read table lt_rows index 1 into lv_row.
-        if sy-subrc is initial. " TODO improve
-          data lv_path type string.
-          field-symbols <mock> like line of mt_mock_index.
-          read table mt_mock_index assigning <mock> index lv_row.
-          assert sy-subrc is initial.
-          lv_path = <mock>-folder && '/' && <mock>-name.
-          raise event request_mock_delete exporting mock_name = lv_path.
-        endif.
+*    case iv_cmd.
+*      when '%DEL'.
+*        read table lt_rows index 1 into lv_row.
+*        if sy-subrc is initial. " TODO improve
+*          data lv_path type string.
+*          field-symbols <mock> like line of mt_mock_index.
+*          read table mt_mock_index assigning <mock> index lv_row.
+*          assert sy-subrc is initial.
+*          lv_path = <mock>-folder && '/' && <mock>-name.
+*          raise event request_mock_delete exporting mock_name = lv_path.
+*        endif.
+*
+*      when others.
+*    endcase.
 
-      when others.
-    endcase.
-
-  endmethod.                    "on_user_command
-
-  method on_before_salv_function.
-    data vvv type i.
-    vvv = 1.
   endmethod.
 
   method handle_double_click.
     data lv_path type string.
     field-symbols <mock> like line of mt_mock_index.
+
     read table mt_mock_index assigning <mock> index row.
     assert sy-subrc is initial.
+
     lv_path = <mock>-folder && '/' && <mock>-name.
     raise event mock_selected exporting mock_name = lv_path.
   endmethod.
