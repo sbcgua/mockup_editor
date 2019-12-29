@@ -103,6 +103,7 @@ class lcl_text_view implementation.
       mv_initiated = abap_true.
     endif.
 
+    free_controls( ).
     if mv_as_xml = abap_true.
       create object mo_html_ctl
         exporting
@@ -130,9 +131,12 @@ class lcl_text_view implementation.
   method on_user_command.
     case iv_cmd.
       when 'AS_XML'.
-        mv_as_xml = boolc( mv_as_xml = abap_false ).
-        free_controls( ).
-        on_output( ).
+*        mv_as_xml = boolc( mv_as_xml = abap_false ).
+*        free_controls( ).
+*        on_output( ).
+
+        cl_abap_browser=>show_xml( xml_string = mv_data ).
+
         rv_processed = abap_true.
 
       when 'BACK' or 'EXIT'.
