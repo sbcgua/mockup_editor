@@ -3,6 +3,10 @@
 
 # ABAP mockup viewer for Mockup loader
 
+**Deprecated in favor of combined package - https://github.com/sbcgua/mockup_loader_toolkit**
+
+----
+
 In-system tool to view zip W3MI mocks created for [Mockup loader](https://github.com/sbcgua/mockup_loader) by [Mockup compiler](https://github.com/sbcgua/mockup_compiler).
 
 ## Dependencies:
